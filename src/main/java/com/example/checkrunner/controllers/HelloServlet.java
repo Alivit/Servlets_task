@@ -1,4 +1,4 @@
-package com.example.checkrunner;
+package com.example.checkrunner.controllers;
 
 import java.io.*;
 import javax.servlet.http.*;
