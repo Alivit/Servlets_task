@@ -12,9 +12,18 @@ import java.io.IOException;
 import java.io.PrintWriter;
 import java.util.List;
 
+/**
+ * Класс сервлет, который отвечает за вывод всех карт
+ * из базы данных
+ */
 @WebServlet("/cards")
 public class CardViewController extends HttpServlet {
 
+    /**
+     * Это поле интерфейса описывающее поведение
+     * сервис обработчика запросов sql
+     * @see Repository
+     */
     Repository<DiscountCard> repository = new DiscountCardService();
 
     @Override

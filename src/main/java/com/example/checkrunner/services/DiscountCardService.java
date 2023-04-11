@@ -21,7 +21,7 @@ public class DiscountCardService implements Repository<DiscountCard> {
     /**
      * Это поле класса запросов к базе данных
      */
-    private PreparedStatement preparedStatement = null;
+    public PreparedStatement preparedStatement = null;
     /**
      * Это поле класса запросов к базе данных
      */

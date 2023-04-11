@@ -12,9 +12,18 @@ import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
 import java.io.PrintWriter;
 
+/**
+ * Класс сервлет, который отвечает за вставку карт
+ * в базу данных
+ */
 @WebServlet("/insertCard")
 public class CardInsertController extends HelloServlet{
 
+    /**
+     * Это поле интерфейса описывающее поведение
+     * сервис обработчика запросов sql
+     * @see Repository
+     */
     Repository<DiscountCard> repository = new DiscountCardService();
 
     @Override

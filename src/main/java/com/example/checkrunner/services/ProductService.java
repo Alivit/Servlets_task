@@ -24,7 +24,7 @@ public class ProductService implements Repository<Product> {
     /**
      * Это поле класса запросов к базе данных
      */
-    PreparedStatement preparedStatement = null;
+    public PreparedStatement preparedStatement = null;
     /**
      * Это поле класса запросов к базе данных
      */
@@ -58,6 +58,10 @@ public class ProductService implements Repository<Product> {
         return status;
     }
 
+    /**
+     * Метод для поиска данных в таблице product
+     * @param id айди нужного товара
+     */
     @Override
     public Product find(int id) {
         String sql = "SELECT * FROM product WHERE id = " + id;

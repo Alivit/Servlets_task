@@ -1,7 +1,6 @@
 package com.example.checkrunner.controllers;
 
 import com.example.checkrunner.dao.Repository;
-import com.example.checkrunner.database.DBConnection;
 import com.example.checkrunner.entity.Product;
 import com.example.checkrunner.services.ProductService;
 import com.google.gson.Gson;
@@ -14,9 +13,18 @@ import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
 import java.io.PrintWriter;
 
+/**
+ * Класс сервлет, который отвечает за удаление продуктов
+ * из базы данных
+ */
 @WebServlet("/deleteProduct")
 public class ProductDeleteController extends HttpServlet {
 
+    /**
+     * Это поле интерфейса описывающее поведение
+     * сервис обработчика запросов sql
+     * @see Repository
+     */
     Repository<Product> repository = new ProductService();
 
     @Override

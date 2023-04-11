@@ -14,9 +14,18 @@ import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
 import java.io.PrintWriter;
 
+/**
+ * Класс сервлет, который отвечает за удаление карт
+ * из базы данных
+ */
 @WebServlet("/deleteCard")
 public class CardDeleteController extends HttpServlet {
 
+    /**
+     * Это поле интерфейса описывающее поведение
+     * сервис обработчика запросов sql
+     * @see Repository
+     */
     Repository<DiscountCard> repository = new DiscountCardService();
 
     @Override

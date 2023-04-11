@@ -13,9 +13,18 @@ import java.io.IOException;
 import java.io.PrintWriter;
 import java.util.List;
 
+/**
+ * Класс сервлет, который отвечает за вывод всех продуктов
+ * из базы данных
+ */
 @WebServlet("/products")
 public class ProductViewController extends HttpServlet {
 
+    /**
+     * Это поле интерфейса описывающее поведение
+     * сервис обработчика запросов sql
+     * @see Repository
+     */
     Repository<Product> repository = new ProductService();
 
     @Override

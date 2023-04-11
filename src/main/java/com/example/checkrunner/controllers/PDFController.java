@@ -15,6 +15,10 @@ import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
 import java.io.PrintWriter;
 
+/**
+ * Класс сервлет, который отвечает за вывод
+ * сгенерированного пдф на странице
+ */
 @WebServlet("/getPDF")
 public class PDFController extends HttpServlet {
 
@@ -24,25 +28,35 @@ public class PDFController extends HttpServlet {
      */
     static RequestUtil req = new RequestUtil();
 
+    /**
+     * Это поле хранящяя ссылку на пдф
+     */
     private String pathPDF = "resources/Receipt.pdf";
 
     @SneakyThrows
     @Override
     protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
+        PrintWriter writer = response.getWriter();
         response.setContentType("text/html");
 
-        String args[] = request.getParameterValues("args");
-        RequestUtil.parseRequest(args);
-        DBConnection.init();
-        req.workWithBD();
-        req.comparison();
-        OutputLogic.viewReceipt(req);
-        Inputable input = FileRepository.getRepository("PDF");
-        input.inputInFile(req);
+        try {
+            String args[] = request.getParameterValues("args");
+            RequestUtil.parseRequest(args);
+            DBConnection.init();
+            req.workWithBD();
+            req.comparison();
+            OutputLogic.viewReceipt(req);
+            Inputable input = FileRepository.getRepository("PDF");
+            input.inputInFile(req);
 
-        PrintWriter out = response.getWriter();
-        out.println("<html><body>");
-        out.println("<iframe src=\"" + pathPDF +"\" width=\"100%\" height=\"100%\" ></iframe>");
-        out.println("</body></html>");
+            writer.println("<html><body>");
+            writer.println("<iframe src=\"" + pathPDF +"\" width=\"100%\" height=\"100%\" ></iframe>");
+            writer.println("</body></html>");
+        }
+        catch (Exception e){
+            writer.print(e);
+            writer.flush();
+        }
+
     }
 }
