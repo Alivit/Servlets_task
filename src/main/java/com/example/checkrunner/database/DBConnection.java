@@ -24,7 +24,7 @@ public class DBConnection {
      */
     public static void init() {
         try {
-            Map<String, Map<String,Object>> data = new Yaml().load(new FileReader("src/main/resources/application.yml"));
+            Map<String, Map<String,Object>> data = new Yaml().load(new FileReader("D:\\Clevertec\\CheckRunner\\src\\main\\resources\\application.yml"));
             final String username = data.get("datasource").get("username").toString();
             final String password = data.get("datasource").get("password").toString();
             final String url = data.get("datasource").get("url").toString();

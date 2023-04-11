@@ -32,19 +32,48 @@ public class DiscountCardService implements Repository<DiscountCard> {
      * @param entity объект класса DiscountCard
      */
     @Override
-    public DiscountCard add(DiscountCard entity){
+    public int add(DiscountCard entity){
 
         String sql = "INSERT INTO discount_card (code, discount) VALUES (?, ?)";
+        int status = 0;
 
         try {
             preparedStatement = connection.prepareStatement(sql);
 
             preparedStatement.setString(1,entity.getCode());
             preparedStatement.setInt(2,entity.getDiscount());
+
+            status = preparedStatement.executeUpdate();
         } catch (SQLException e) {
             e.printStackTrace();
         }
 
+        return status;
+    }
+
+    /**
+     * Метод для поиска данных в таблице discount_card
+     * @param id айди нужного товара
+     */
+    @Override
+    public DiscountCard find(int id) {
+        String sql = "SELECT * FROM discount_card WHERE id = " + id;
+
+        try {
+            statement = connection.createStatement();
+
+            ResultSet resultSet = statement.executeQuery(sql);
+
+            if(resultSet != null){
+                return new DiscountCard(
+                        resultSet.getInt("id"),
+                        resultSet.getString("code"),
+                        resultSet.getInt("discount")
+                );
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
         return null;
     }
 
@@ -85,19 +114,22 @@ public class DiscountCardService implements Repository<DiscountCard> {
      * @param entity объект класса DiscountCard
      */
     @Override
-    public DiscountCard update(DiscountCard entity) {
-        String sql = "UPDATE discount_card SET code=?, discount=?";
+    public int update(DiscountCard entity) {
+        int status = 0;
+        String sql = "UPDATE discount_card SET code=?, discount=? WHERE id = " + entity.getId();
 
         try {
             preparedStatement = connection.prepareStatement(sql);
 
             preparedStatement.setString(1, entity.getCode());
             preparedStatement.setInt(2, entity.getDiscount());
+
+            status = preparedStatement.executeUpdate();
         } catch (SQLException e) {
             e.printStackTrace();
         }
 
-        return null;
+        return status;
     }
 
     /**
@@ -105,7 +137,8 @@ public class DiscountCardService implements Repository<DiscountCard> {
      * @param entity объект класса DiscountCard
      */
     @Override
-    public DiscountCard remove(DiscountCard entity){
+    public int remove(DiscountCard entity){
+        int status = 0;
         String sql = "DELETE FROM discount_card WHERE ID=?";
 
         try{
@@ -113,11 +146,11 @@ public class DiscountCardService implements Repository<DiscountCard> {
 
             preparedStatement.setInt(1,entity.getId());
 
-            preparedStatement.executeUpdate();
+            status = preparedStatement.executeUpdate();
         } catch (SQLException e) {
             e.printStackTrace();
         }
 
-        return null;
+        return status;
     }
 }

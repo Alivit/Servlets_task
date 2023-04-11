@@ -2,9 +2,15 @@ package com.example.checkrunner.services;
 
 import com.example.checkrunner.dao.Repository;
 import com.example.checkrunner.database.DBConnection;
+
 import com.example.checkrunner.entity.Product;
 
-import java.sql.*;
+
+import java.sql.Connection;
+import java.sql.PreparedStatement;
+import java.sql.SQLException;
+import java.sql.Statement;
+import java.sql.ResultSet;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -29,7 +35,8 @@ public class ProductService implements Repository<Product> {
      * @param entity объект класса Product
      */
     @Override
-    public Product add(Product entity) {
+    public int add(Product entity) {
+        int status = 0;
         String sql = "INSERT INTO product (name, price, status) VALUES (?, ?, ?)";
 
         try {
@@ -39,6 +46,32 @@ public class ProductService implements Repository<Product> {
             preparedStatement.setDouble(2,entity.getPrice());
             preparedStatement.setString(3,entity.getStatus());
 
+            status = preparedStatement.executeUpdate();
+
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+        return status;
+    }
+
+    @Override
+    public Product find(int id) {
+        String sql = "SELECT * FROM product WHERE id = " + id;
+
+        try {
+            statement = connection.createStatement();
+
+            ResultSet resultSet = statement.executeQuery(sql);
+
+            if(resultSet != null){
+                return new Product(
+                        resultSet.getInt("id"),
+                        resultSet.getString("name"),
+                        resultSet.getDouble("price"),
+                        resultSet.getString("status"),
+                        1
+                );
+            }
         } catch (SQLException e) {
             e.printStackTrace();
         }
@@ -83,8 +116,9 @@ public class ProductService implements Repository<Product> {
      * @param entity объект класса Product
      */
     @Override
-    public Product update(Product entity) {
-        String sql = "UPDATE product SET name=?, price=?, status=?";
+    public int update(Product entity) {
+        int status = 0;
+        String sql = "UPDATE product SET name=?, price=?, status=? WHERE id = " + entity.getId();
 
         try {
             preparedStatement = connection.prepareStatement(sql);
@@ -92,11 +126,13 @@ public class ProductService implements Repository<Product> {
             preparedStatement.setString(1, entity.getName());
             preparedStatement.setDouble(2, entity.getPrice());
             preparedStatement.setString(3, entity.getStatus());
+
+            status = preparedStatement.executeUpdate();
         } catch (SQLException e) {
             e.printStackTrace();
         }
 
-        return null;
+        return status;
     }
 
     /**
@@ -104,16 +140,17 @@ public class ProductService implements Repository<Product> {
      * @param entity объект класса Product
      */
     @Override
-    public Product remove(Product entity) {
+    public int remove(Product entity) {
+        int status = 0;
         String sql = "DELETE FROM product WHERE ID=?";
 
         try{
             preparedStatement = connection.prepareStatement(sql);
             preparedStatement.setInt(1,entity.getId());
-            preparedStatement.executeUpdate();
+            status = preparedStatement.executeUpdate();
         } catch (SQLException e) {
             e.printStackTrace();
         }
-        return null;
+        return status;
     }
 }

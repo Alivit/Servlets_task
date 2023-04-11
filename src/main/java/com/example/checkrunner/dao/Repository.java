@@ -3,11 +3,13 @@ package com.example.checkrunner.dao;
 import java.util.List;
 
 public interface Repository<T> {
-    T add(T entity);
+    int add(T entity);
+
+    T find(int id);
 
     List<T> getAll();
 
-    T update(T entity);
+    int update(T entity);
 
-    T remove(T entity);
+    int remove(T entity);
 }
