@@ -2,21 +2,20 @@ package com.example.checkrunner.controllers;
 
 import com.example.checkrunner.dao.Repository;
 import com.example.checkrunner.database.DBConnection;
-import com.example.checkrunner.entity.Product;
-import com.example.checkrunner.services.ProductService;
+import com.example.checkrunner.entity.DiscountCard;
+import com.example.checkrunner.services.DiscountCardService;
 
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
-import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
 import java.io.PrintWriter;
 
-@WebServlet("/insertProduct")
-public class ProductInsert extends HttpServlet {
+@WebServlet("/insertCard")
+public class CardInsertController extends HelloServlet{
 
-    Repository<Product> repository = new ProductService();
+    Repository<DiscountCard> repository = new DiscountCardService();
 
     @Override
     protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
@@ -24,19 +23,16 @@ public class ProductInsert extends HttpServlet {
         response.setContentType("application/json");
         response.setCharacterEncoding("UTF-8");
 
-        DBConnection.init();
         try {
-            String name = (String) request.getParameter("name");
-            double price = Double.parseDouble(request.getParameter("price"));
-            String status = (String) request.getParameter("status");
-
-            Product product = new Product(0, name, price, status, 1);
-            if(repository.add(product) == 0){
-                writer.print("SQL ошибка");
+            String code = (String) request.getParameter("code");
+            int discount = Integer.parseInt(request.getParameter("discount"));
+            DiscountCard card = new DiscountCard(0, code, discount);
+            if(repository.add(card) == 0){
+                writer.print("SQL error");
                 writer.flush();
             }
             else {
-                writer.print("Карта добавлена");
+                writer.print("Card was added");
                 writer.flush();
             }
         }
@@ -45,4 +41,5 @@ public class ProductInsert extends HttpServlet {
         }
 
     }
+
 }

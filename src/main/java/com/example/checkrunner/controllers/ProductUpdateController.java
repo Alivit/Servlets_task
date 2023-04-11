@@ -14,7 +14,7 @@ import java.io.IOException;
 import java.io.PrintWriter;
 
 @WebServlet("/updateProduct")
-public class ProductUpdate extends HttpServlet {
+public class ProductUpdateController extends HttpServlet {
 
     Repository<Product> repository = new ProductService();
 
@@ -24,7 +24,6 @@ public class ProductUpdate extends HttpServlet {
         response.setContentType("application/json");
         response.setCharacterEncoding("UTF-8");
 
-        DBConnection.init();
         try {
             int id = Integer.parseInt(request.getParameter("id"));
             String name = (String) request.getParameter("name");
@@ -38,11 +37,11 @@ public class ProductUpdate extends HttpServlet {
             else {
                 Product product = new Product(0, name, price, status, 1);
                 if(repository.update(product) == 0) {
-                    writer.print("SQL ошибка");
+                    writer.print("SQL error");
                     writer.flush();
                 }
                 else {
-                    writer.print("Карта обновлена");
+                    writer.print("Product was updated");
                     writer.flush();
                 }
             }

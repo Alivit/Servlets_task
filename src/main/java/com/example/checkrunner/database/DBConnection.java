@@ -28,9 +28,9 @@ public class DBConnection {
             final String username = data.get("datasource").get("username").toString();
             final String password = data.get("datasource").get("password").toString();
             final String url = data.get("datasource").get("url").toString();
-
+            Class.forName("org.postgresql.Driver");
             connection = DriverManager.getConnection(url, username, password);
-        } catch (IOException | SQLException e) {
+        } catch (IOException | SQLException | ClassNotFoundException e) {
             e.printStackTrace();
         }
     }

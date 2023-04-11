@@ -4,6 +4,7 @@ import com.example.checkrunner.dao.Repository;
 import com.example.checkrunner.database.DBConnection;
 import com.example.checkrunner.entity.DiscountCard;
 import com.example.checkrunner.services.DiscountCardService;
+import com.google.gson.Gson;
 
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
@@ -13,42 +14,42 @@ import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
 import java.io.PrintWriter;
 
-@WebServlet("/updateCard")
-public class CardUpdate extends HttpServlet{
+@WebServlet("/deleteCard")
+public class CardDeleteController extends HttpServlet {
 
     Repository<DiscountCard> repository = new DiscountCardService();
 
     @Override
     protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-        PrintWriter writer = response.getWriter();
+        PrintWriter printWriter = response.getWriter();
         response.setContentType("application/json");
         response.setCharacterEncoding("UTF-8");
 
-        DBConnection.init();
         try {
             int id = Integer.parseInt(request.getParameter("id"));
-            String code = (String) request.getParameter("name");
-            int discount = Integer.parseInt(request.getParameter("discount"));
+            DiscountCard card = repository.find(id);
 
-            if(repository.find(id) == null){
-                writer.print("Карта не найдена");
-                writer.flush();
+            if(card == null){
+                printWriter.print("Card not found!!!");
+                printWriter.flush();
+            }
+            else if(repository.remove(card) == 0) {
+                printWriter.print("SQL error");
+                printWriter.flush();
             }
             else {
-                DiscountCard card = new DiscountCard(id, code, discount);
-                if(repository.update(card) == 0) {
-                    writer.print("SQL ошибка");
-                    writer.flush();
-                }
-                else {
-                    writer.print("Карта обновлена");
-                    writer.flush();
-                }
+                printWriter.print(new Gson().toJson(card) + " was deleted");
+                printWriter.flush();
             }
-
-        }catch (Exception e){
-            writer.print(e);
-            writer.flush();
         }
+        catch (Exception e){
+            printWriter.print(e);
+            printWriter.flush();
+        }
+    }
+
+    @Override
+    protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
+        doPost(req, resp);
     }
 }

@@ -30,6 +30,10 @@ public class ProductService implements Repository<Product> {
      */
     Statement statement = null;
 
+    static {
+        DBConnection.init();
+    }
+
     /**
      * Метод созданный для добавления данных в таблицу product
      * @param entity объект класса Product
@@ -87,7 +91,7 @@ public class ProductService implements Repository<Product> {
         List<Product> productList = new ArrayList<>();
 
         String sql = "SELECT * FROM product";
-
+        System.out.println(connection);
         try {
             statement = connection.createStatement();
 

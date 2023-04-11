@@ -15,7 +15,7 @@ import java.io.IOException;
 import java.io.PrintWriter;
 
 @WebServlet("/deleteProduct")
-public class ProductDelete extends HttpServlet {
+public class ProductDeleteController extends HttpServlet {
 
     Repository<Product> repository = new ProductService();
 
@@ -25,21 +25,20 @@ public class ProductDelete extends HttpServlet {
         response.setContentType("application/json");
         response.setCharacterEncoding("UTF-8");
 
-        DBConnection.init();
         try {
             int id = Integer.parseInt(request.getParameter("id"));
             Product product = repository.find(id);
 
             if(product == null){
-                printWriter.print("Карта не найдена!!!");
+                printWriter.print("Product not found!!!");
                 printWriter.flush();
             }
             else if(repository.remove(product) == 0) {
-                printWriter.print("SQL ошибка");
+                printWriter.print("SQL error");
                 printWriter.flush();
             }
             else {
-                printWriter.print(new Gson().toJson(product) + " был удалён");
+                printWriter.print(new Gson().toJson(product) + " was deleted");
                 printWriter.flush();
             }
         }

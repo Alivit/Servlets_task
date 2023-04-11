@@ -1,5 +1,7 @@
 package com.example.checkrunner.controllers;
 
+import com.example.checkrunner.database.DBConnection;
+
 import java.io.*;
 import javax.servlet.http.*;
 import javax.servlet.annotation.*;
@@ -13,6 +15,7 @@ public class HelloServlet extends HttpServlet {
     }
 
     public void doGet(HttpServletRequest request, HttpServletResponse response) throws IOException {
+        DBConnection.init();
         response.setContentType("text/html");
 
         // Hello

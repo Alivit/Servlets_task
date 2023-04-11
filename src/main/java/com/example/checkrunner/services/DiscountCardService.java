@@ -51,6 +51,10 @@ public class DiscountCardService implements Repository<DiscountCard> {
         return status;
     }
 
+    static {
+        DBConnection.init();
+    }
+
     /**
      * Метод для поиска данных в таблице discount_card
      * @param id айди нужного товара
