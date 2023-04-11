@@ -8,22 +8,36 @@ version '1.0-SNAPSHOT'
 
 repositories {
     mavenCentral()
+    maven {
+        url 'https://repo.clojars.org'
+        name 'Clojars'
+    }
 }
 
 ext {
     junitVersion = '5.8.1'
 }
 
-sourceCompatibility = '1.8'
-targetCompatibility = '1.8'
+sourceCompatibility = "16"
+targetCompatibility = "16"
 
 tasks.withType(JavaCompile) {
     options.encoding = 'UTF-8'
 }
 
 dependencies {
+    implementation 'junit:junit:4.13.1'
+    implementation 'org.projectlombok:lombok:1.18.20'
     compileOnly('javax.servlet:javax.servlet-api:4.0.1')
+    compileOnly 'postgresql:postgresql:9.3-1102.jdbc41'
+    compileOnly 'org.projectlombok:lombok:1.18.26'
+    annotationProcessor 'org.projectlombok:lombok:1.18.26'
+    implementation 'org.yaml:snakeyaml:2.0'
+    implementation 'com.google.code.gson:gson:2.8.5'
 
+    testImplementation 'org.assertj:assertj-core:3.6.1'
+    implementation group: 'com.itextpdf', name: 'itextpdf', version: '5.5.13.2'
+    implementation 'org.junit.jupiter:junit-jupiter:5.8.1'
     testImplementation("org.junit.jupiter:junit-jupiter-api:${junitVersion}")
     testRuntimeOnly("org.junit.jupiter:junit-jupiter-engine:${junitVersion}")
 }
